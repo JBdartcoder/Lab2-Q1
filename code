@@ -1,0 +1,53 @@
+import sympy as sym
+
+# Define all involved symbolic variables
+# constants
+M, m, g, ell = sym.symbols('M, m, g, ell')
+
+# system variables
+x1, x2, x3, x4, F = sym.symbols('x1, x2, x3, x4, F')
+
+# Define φ
+phi = 4 * m * ell * x4**2 * sym.sin(x3) + 4 * F - 3 * m * g * sym.sin(x3) * sym.cos(x3)
+phi /= 4 * (M + m) - 3 * m * sym.cos(x3)**2
+
+# Define Ψ
+psi = -3 * (m * ell * x4**2 * sym.sin(x3) * sym.cos(x3) + F * sym.cos(x3) - (M + m) * g * sym.sin(x3))
+psi /= ell * (4 * (M + m) - 3 * m * sym.cos(x3)**2)
+
+
+# Implement function to take symbolic expression dependant on F, x3 & x4
+# and evaluate it at equilibrium points F0, x30, x40
+def evaluate_at_equilibrium(f):
+    return f.subs([(F, F0), (x3, x30), (x4, x40)])
+
+
+# Define equilibrium points (all 0 in this case)
+F0 = 0
+x30 = 0
+x40 = 0
+
+# Compute the derivatives of φ at the equilibrium point
+phi_deriv_F_at_equlibrium = evaluate_at_equilibrium(phi.diff(F))
+phi_deriv_x3_at_equlibrium = evaluate_at_equilibrium(phi.diff(x3))
+phi_deriv_x4_at_equlibrium = evaluate_at_equilibrium(phi.diff(x4))
+
+# Compute the derivatives of Ψ at the equilibrium point
+psi_deriv_F_at_equlibrium = evaluate_at_equilibrium(psi.diff(F))
+psi_deriv_x3_at_equlibrium = evaluate_at_equilibrium(psi.diff(x3))
+psi_deriv_x4_at_equlibrium = evaluate_at_equilibrium(psi.diff(x4))
+
+# Print the derivatives
+print('φ wrt F:')
+sym.pprint(phi_deriv_F_at_equlibrium)
+print('φ wrt x3:')
+sym.pprint(phi_deriv_x3_at_equlibrium)
+print('φ wrt x4:')
+sym.pprint(phi_deriv_x4_at_equlibrium)
+print('~~~~~~~~~~~~~~~~~~~')
+print('Ψ wrt F:')
+sym.pprint(psi_deriv_F_at_equlibrium)
+print('Ψ wrt x3:')
+sym.pprint(psi_deriv_x3_at_equlibrium)
+print('Ψ wrt x4:')
+sym.pprint(psi_deriv_x4_at_equlibrium)
